@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import "./index.css";
+
+import LoadingScreen from "./components/LoadingScreen";
+import { useRef, useState } from "react";
+import Navbar from "./components/Navbar";
+import Home from "./components/Home";
+import AboutMe from "./components/AboutMe";
+import Projects from "./components/Projects";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isLoading, setIsLoading] = useState(true);
+
+  const homeRef = useRef<HTMLElement | null>(null);
+  const aboutRef = useRef<HTMLElement | null>(null);
+  const projectsRef = useRef<HTMLElement | null>(null);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      {isLoading ? (
+        <LoadingScreen onComplete={() => setIsLoading(false)} />
+      ) : null}
+      <div
+        className={`min-h-screen transition-opacity-duration-700 ${isLoading ? "opacity-0" : "opacity-100"} bg-[#f6d6b1] text-gray-100`}
+      >
+        <Navbar refs={[homeRef, aboutRef, projectsRef]} />
+        <Home refs={[homeRef, projectsRef]} />
+        <AboutMe ref={aboutRef} />
+        <Projects ref={projectsRef} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
